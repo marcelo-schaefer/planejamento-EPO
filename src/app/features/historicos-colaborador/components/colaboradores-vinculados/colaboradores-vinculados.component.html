@@ -36,11 +36,17 @@
             <p-button
               severity="danger"
               (click)="botaoExcluir(colaborador)"
+              [disabled]="desabilitar"
+              ><i class="pi pi-trash"></i
+            ></p-button>
+          </td>
+          <td *ngIf="!colaborador?.incluido">
+            <p-inputSwitch
+              [(ngModel)]="colaborador.excluir"
               [disabled]="
                 desabilitar || colaborador?.NHorasApontadas != '00:00'
               "
-              ><i class="pi pi-trash"></i
-            ></p-button>
+            />
           </td>
         </tr>
       </ng-template>

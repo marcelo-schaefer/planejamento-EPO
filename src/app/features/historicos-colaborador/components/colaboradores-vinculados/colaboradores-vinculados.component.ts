@@ -26,7 +26,6 @@ import { MessagesModule } from 'primeng/messages';
 import { RippleModule } from 'primeng/ripple';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
-import { Apontamento } from '../../services/models/apontamento';
 import { Projeto } from '../../services/models/projeto.model';
 
 @Component({
@@ -135,6 +134,28 @@ export class ColaboradoresVinculadosComponent implements OnInit {
     );
   }
 
+  retornaListaColaboradoresGravacao(): Colaborador[] {
+    return (
+      (this.projetoSelecionado && this.projetoSelecionado.colaboradores
+        ? this.projetoSelecionado.colaboradores
+            .filter(
+              (f) =>
+                !this.colaboradoresAdicionados.some(
+                  (colabAdicionado) =>
+                    colabAdicionado.NMatricula == f.NMatricula
+                ) && f.excluir
+            )
+            .map((m) => {
+              return {
+                ...m,
+                nIdProjetoVinculado: this.projetoSelecionado.NId,
+              } as Colaborador;
+            })
+            .concat(this.colaboradoresAdicionados)
+        : this.colaboradoresAdicionados) || []
+    );
+  }
+
   botaoExcluir(colaborador: Colaborador): void {
     this.colaboradoresAdicionados.splice(
       this.colaboradoresAdicionados.indexOf(
@@ -169,7 +190,7 @@ export class ColaboradoresVinculadosComponent implements OnInit {
   converterParaHoraFormatada(minutosTotais: number): string {
     if (minutosTotais) {
       const horas = Math.abs(Math.floor(minutosTotais / 60));
-      const minutos = minutosTotais % 60;
+      const minutos = Math.abs(minutosTotais % 60);
 
       const horasFormatadas = horas.toString().padStart(2, '0');
       const minutosFormatados = minutos.toString().padStart(2, '0');

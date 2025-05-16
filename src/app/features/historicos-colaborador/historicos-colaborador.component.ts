@@ -146,8 +146,7 @@ export class HistoricosColaboradorComponent implements OnInit, AfterViewInit {
         .retornaListaColaboradoresTabela()
         .filter(
           (f) =>
-            f.NMatricula == colaborador.NMatricula &&
-            colaborador.AOrigem == 'Planejado'
+            f.NMatricula == colaborador.NMatricula && f.AOrigem == 'Planejado'
         ).length > 0
     )
       this.dadosProjetoComponent.apresentarErroColaboradorDuplicado(true);
@@ -220,18 +219,18 @@ export class HistoricosColaboradorComponent implements OnInit, AfterViewInit {
 
   montaCorpoEnvio(): Persistencia {
     return {
-      colaboradores:
-        this.colaboradoresVinculadosComponent.colaboradoresAdicionados.map(
-          (colab) => {
-            return {
-              nEmpresa: Number(colab.NEmpresa),
-              nTipoColaborador: Number(colab.NTipoColaborador),
-              nMatricula: Number(colab.NMatricula),
-              nTotalHoras: Number(colab.NHorasTotais),
-              nCodigoProjeto: Number(colab.nIdProjetoVinculado),
-            } as ColaboradoresPersistencia;
-          }
-        ),
+      colaboradores: this.colaboradoresVinculadosComponent
+        .retornaListaColaboradoresGravacao()
+        .map((colab) => {
+          return {
+            nEmpresa: Number(colab.NEmpresa),
+            nTipoColaborador: Number(colab.NTipoColaborador),
+            nMatricula: Number(colab.NMatricula),
+            nTotalHoras: Number(colab.NHorasTotais),
+            nCodigoProjeto: Number(colab.nIdProjetoVinculado),
+            aExcluir: colab.excluir ? 'S' : 'N',
+          } as ColaboradoresPersistencia;
+        }),
     };
   }
 }

@@ -12,6 +12,7 @@ export interface Colaborador {
   AOrigem: string;
   nIdProjetoVinculado?: string;
   incluido?: boolean;
+  excluir?: boolean;
 }
 
 export class RetornoColaborador {

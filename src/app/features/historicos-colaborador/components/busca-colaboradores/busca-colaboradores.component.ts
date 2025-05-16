@@ -107,7 +107,11 @@ export class BuscaColaboradoresComponent implements OnInit {
   }
 
   limparFormulario(): void {
-    this.formDadosSolicitacao.get('colaboradorSelecionado').setValue(null);
+    if (
+      this.formDadosSolicitacao &&
+      this.formDadosSolicitacao.get('colaboradorSelecionado')
+    )
+      this.formDadosSolicitacao.get('colaboradorSelecionado').setValue(null);
   }
 
   inicializarListaColaboradores(colaboradores: Colaborador[]): void {

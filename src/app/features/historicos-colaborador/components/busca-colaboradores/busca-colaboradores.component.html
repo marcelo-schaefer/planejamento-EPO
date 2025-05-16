@@ -1,32 +1,4 @@
 <form [formGroup]="formDadosSolicitacao">
-  <!-- <nz-form-item>
-    <nz-form-control nzErrorTip="Selecione um Colaborador">
-      <nz-select
-        formControlName="colaboradorSelecionado"
-        id="matricula"
-        nzAutoFocus
-        nzShowSearch
-        nzServerSearch
-        (nzOnSearch)="onSearch($event)"
-        [nzLoading]="isLoadingColaboradores"
-        [nzDropdownRender]="renderTemplate"
-        (nzScrollToBottom)="onScrollToBottom()"
-        (ngModelChange)="selecionaColaborador($event)"
-        nzPlaceHolder="Selecione o colaborador"
-        [compareWith]="compareColaborador"
-        #matricula
-      >
-        <nz-option
-          *ngFor="let o of colaboradores"
-          [nzValue]="o"
-          [nzLabel]="o.matricula + ' - ' + o.nomeCompleto"
-        ></nz-option>
-      </nz-select>
-      <ng-template #renderTemplate>
-        <nz-spin *ngIf="isLoadingColaboradores"></nz-spin>
-      </ng-template>
-    </nz-form-control>
-  </nz-form-item> -->
   <p-dropdown
     [options]="colaboradores || []"
     [style]="{ width: '100%' }"

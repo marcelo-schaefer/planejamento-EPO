@@ -10,4 +10,5 @@ export interface ColaboradoresPersistencia extends Colaborador {
   nMatricula: number;
   nTotalHoras: number;
   nCodigoProjeto: number;
+  aExcluir: string;
 }
