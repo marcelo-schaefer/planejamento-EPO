@@ -209,7 +209,8 @@ export class ColaboradoresVinculadosComponent implements OnInit {
     return this.converterParaHoraFormatada(
       this.retornaListaColaboradoresTabela().reduce(
         (sum, colaborador) =>
-          sum + (Number(colaborador.NHorasTotais) ?? 0) * 60,
+          sum +
+          (Number(this.converterParaMinutos(colaborador.NHorasTotais)) ?? 0),
         0
       ) || 0
     );
