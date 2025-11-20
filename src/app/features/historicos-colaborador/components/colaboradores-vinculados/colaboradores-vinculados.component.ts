@@ -210,7 +210,11 @@ export class ColaboradoresVinculadosComponent implements OnInit {
       this.retornaListaColaboradoresTabela().reduce(
         (sum, colaborador) =>
           sum +
-          (Number(this.converterParaMinutos(colaborador.NHorasTotais)) ?? 0),
+          (Number(
+            colaborador.NHorasTotais.indexOf(':') > 0
+              ? this.converterParaMinutos(colaborador.NHorasTotais)
+              : Number(colaborador.NHorasTotais) * 60
+          ) ?? 0),
         0
       ) || 0
     );

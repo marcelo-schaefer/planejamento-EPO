@@ -8,6 +8,7 @@ export interface Colaborador {
   ANome: string;
   NHorasTotais: string;
   NHorasApontadas: string;
+  NHorasAdicionais: string;
   NDesvio: string;
   AOrigem: string;
   nIdProjetoVinculado?: string;
