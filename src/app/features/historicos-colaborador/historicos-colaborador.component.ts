@@ -28,6 +28,7 @@ import {
   ColaboradoresPersistencia,
   Persistencia,
 } from './services/models/persistencia';
+import { TokenService } from '../../core/services/token.service';
 
 @Component({
   selector: 'app-historicos-colaborador',
@@ -57,6 +58,7 @@ export class HistoricosColaboradorComponent implements OnInit, AfterViewInit {
     | undefined;
 
   private informacoesColaboradorService = inject(InformacoesColaboradorService);
+  private tokenService = inject(TokenService);
 
   protected informacoesColaborador = signal<Colaborador | undefined>(undefined);
   carregandoInformacoes = signal(false);
@@ -72,8 +74,19 @@ export class HistoricosColaboradorComponent implements OnInit, AfterViewInit {
   }
 
   async ngAfterViewInit(): Promise<void> {
+    await this.checkInicializacao();
     await this.inicializarBuscaProjetos();
     this.carregandoInformacoes.set(false);
+  }
+
+  async checkInicializacao(): Promise<void> {
+    while (
+      !this.tokenService.token$.value?.accessToken ||
+      !this.tokenService.username
+    ) {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      this.tokenService.carregarToken();
+    }
   }
 
   inicializaComponente(): void {
