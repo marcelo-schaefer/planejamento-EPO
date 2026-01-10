@@ -20,11 +20,31 @@
           <th>Excluir</th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-colaborador>
+      <ng-template pTemplate="body" let-colaborador let-index="rowIndex">
         <tr>
           <td>{{ colaborador.AOrigem }}</td>
           <td>{{ colaborador.NMatricula + " - " + colaborador.ANome }}</td>
-          <td>{{ colaborador.NHorasTotais }}</td>
+          <td
+            [pEditableColumn]="colaborador.NHorasTotais"
+            pEditableColumnField="NQuantidade"
+          >
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <input
+                  type="text"
+                  pInputText
+                  class="form-control"
+                  [ngModel]="colaborador.NHorasTotais"
+                  (ngModelChange)="formatarHorasTotaisAlteradas($event, index)"
+                  [disabled]="colaborador.excluir || desabilitar"
+                  placeholder="00:00"
+                />
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ colaborador.NHorasTotais }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
           <td>{{ colaborador.NHorasAdicionais }}</td>
           <td>{{ colaborador.NHorasApontadas }}</td>
           <td
@@ -32,7 +52,7 @@
               'texto-vermelho': verificaDesvioNegativo(colaborador.NDesvio)
             }"
           >
-            {{ colaborador.NDesvio != "0" ? colaborador.NDesvio : "00:00" }}
+            {{ calculaDesvio(colaborador) }}
           </td>
           <td *ngIf="colaborador?.incluido">
             <p-button

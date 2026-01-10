@@ -1,4 +1,12 @@
-import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  inject,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { BehaviorSubject, firstValueFrom, from, Observable, of } from 'rxjs';
 import {
   debounceTime,
@@ -22,7 +30,11 @@ import { CorpoBusca } from '../../services/models/corpo-busca';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { CardModule } from 'primeng/card';
-import { DropdownChangeEvent, DropdownModule } from 'primeng/dropdown';
+import {
+  Dropdown,
+  DropdownChangeEvent,
+  DropdownModule,
+} from 'primeng/dropdown';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessagesModule } from 'primeng/messages';
@@ -52,7 +64,7 @@ import { CommonModule } from '@angular/common';
     RippleModule,
   ],
 })
-export class BuscaColaboradoresComponent implements OnInit {
+export class BuscaColaboradoresComponent implements OnInit, AfterViewInit {
   @Output()
   colaboradorSelecionadoEmit: EventEmitter<Colaborador> =
     new EventEmitter<Colaborador>();
@@ -77,6 +89,8 @@ export class BuscaColaboradoresComponent implements OnInit {
 
   formDadosSolicitacao: FormGroup;
 
+  @ViewChild('meuDropdown') dropdown!: Dropdown;
+
   ngOnInit(): void {
     this.searchChange$
       .asObservable()
@@ -100,10 +114,16 @@ export class BuscaColaboradoresComponent implements OnInit {
           ];
         this.colaboradores = colaboradores.outputData.colaboradores || [];
         this.isLoadingColaboradores = false;
+        this.dropdown.hide();
+        if (!this.inicializando) this.dropdown.show();
       });
 
     this.buildForm();
     this.opcoesIniciais();
+  }
+
+  ngAfterViewInit(): void {
+    this.dropdown.hide();
   }
 
   limparFormulario(): void {
@@ -140,6 +160,7 @@ export class BuscaColaboradoresComponent implements OnInit {
   }
 
   searchLoadColaboradores(search: string): Observable<RetornoColaborador> {
+    this.dropdown.hide();
     this.isLoadingColaboradores = true;
     this.cleanSelect();
     this.search = search;

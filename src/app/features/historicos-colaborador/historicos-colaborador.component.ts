@@ -239,11 +239,25 @@ export class HistoricosColaboradorComponent implements OnInit, AfterViewInit {
             nEmpresa: Number(colab.NEmpresa),
             nTipoColaborador: Number(colab.NTipoColaborador),
             nMatricula: Number(colab.NMatricula),
-            nTotalHoras: Number(colab.NHorasTotais),
+            nTotalHoras: this.converterParaMinutos(colab.NHorasTotais),
             nCodigoProjeto: Number(colab.nIdProjetoVinculado),
             aExcluir: colab.excluir ? 'S' : 'N',
           } as ColaboradoresPersistencia;
         }),
     };
+  }
+
+  converterParaMinutos(tempo: string): number {
+    if (tempo) {
+      if (tempo.includes('-')) {
+        tempo = tempo.split('-')[1];
+        const [horas, minutos] = tempo.split(':').map(Number);
+        return -(horas * 60 + minutos);
+      } else {
+        const [horas, minutos] = tempo.split(':').map(Number);
+        return horas * 60 + minutos;
+      }
+    }
+    return 0;
   }
 }

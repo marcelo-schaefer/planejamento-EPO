@@ -1,5 +1,6 @@
 <form [formGroup]="formDadosSolicitacao">
   <p-dropdown
+    #meuDropdown
     [options]="colaboradores || []"
     [style]="{ width: '100%' }"
     formControlName="colaboradorSelecionado"

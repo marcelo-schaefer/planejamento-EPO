@@ -132,7 +132,8 @@ export class DadosProjetoComponent implements OnInit {
 
   adicionarColaboradorAoProjeto(): void {
     this.colaboradorSelecionado.incluido = true;
-    this.colaboradorSelecionado.NHorasTotais = this.horasProjeto.toString();
+    this.colaboradorSelecionado.NHorasTotais =
+      this.horasProjeto.toString() + ':00';
     this.colaboradorSelecionado.NDesvio = this.horasProjeto.toString();
     this.colaboradorSelecionado.NHorasApontadas = '00:00';
     this.colaboradorSelecionado.NDesvio = '00:00';
