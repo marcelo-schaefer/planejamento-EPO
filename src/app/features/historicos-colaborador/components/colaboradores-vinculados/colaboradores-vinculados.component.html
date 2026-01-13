@@ -34,8 +34,10 @@
                   type="text"
                   pInputText
                   class="form-control"
-                  [ngModel]="colaborador.NHorasTotais"
-                  (ngModelChange)="formatarHorasTotaisAlteradas($event, index)"
+                  [ngModel]="horaTotalAlterada"
+                  (focus)="horaTotalAlterada = colaborador.NHorasTotais"
+                  (ngModelChange)="formatacaoNovaHorasTotais($event)"
+                  (blur)="formatarHorasTotaisAlteradas(index)"
                   [disabled]="colaborador.excluir || desabilitar"
                   placeholder="00:00"
                 />

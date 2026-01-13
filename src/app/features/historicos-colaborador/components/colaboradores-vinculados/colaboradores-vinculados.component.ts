@@ -57,6 +57,7 @@ export class ColaboradoresVinculadosComponent implements OnInit {
   projetoSelecionado!: Projeto;
   colaboradoresAdicionados!: Colaborador[];
   desabilitar = false;
+  horaTotalAlterada!: string;
 
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -261,17 +262,16 @@ export class ColaboradoresVinculadosComponent implements OnInit {
     return minutosNovos > minutosApontados || minutosNovos >= minutosAntigos;
   }
 
-  formatarHorasTotaisAlteradas(v: string, index: number): void {
-    const horaFormatada = this.formatacaoNovaHorasTotais(v);
+  formatarHorasTotaisAlteradas(index: number): void {
     if (
       this.verificaSeHorasTotaisMenorHorasApontadas(
-        horaFormatada,
+        this.horaTotalAlterada,
         this.retornaListaColaboradoresTabela()[index].NHorasTotaisOriginal,
         this.retornaListaColaboradoresTabela()[index].NHorasApontadas
       )
     ) {
       this.retornaListaColaboradoresTabela()[index].NHorasTotais =
-        horaFormatada;
+        this.horaTotalAlterada;
     }
   }
 
@@ -290,6 +290,7 @@ export class ColaboradoresVinculadosComponent implements OnInit {
     if (hNumber == 0) h = '00';
     if (mNumber == 0) m = '00';
 
+    this.horaTotalAlterada = `${h}:${m}`;
     return `${h}:${m}`;
   }
 }
