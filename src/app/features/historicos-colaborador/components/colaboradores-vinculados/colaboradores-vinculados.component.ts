@@ -276,21 +276,39 @@ export class ColaboradoresVinculadosComponent implements OnInit {
   }
 
   formatacaoNovaHorasTotais(horasTotais: string): string {
-    let v = horasTotais.replace(/\D/g, '');
-    let h = v.slice(0, -2) || '0';
-    let m = v.slice(-2);
-    m = m.length < 2 ? m : Math.min(+m, 59).toString().padStart(2, '0');
+    if (horasTotais.includes(':')) {
+      const partes = horasTotais.split(':');
 
-    const hNumber = Number(h);
-    const mNumber = Number(m);
+      const horas = Number(partes[0].replace(/\D/g, '')) || 0;
 
-    if (hNumber > 0) h = hNumber.toString();
-    if (hNumber < 10) h = '0' + h;
+      let minutosStr = (partes[1] || '').replace(/\D/g, '');
 
-    if (hNumber == 0) h = '00';
-    if (mNumber == 0) m = '00';
+      if (partes[1] === undefined) return `${horas}:`;
 
-    this.horaTotalAlterada = `${h}:${m}`;
-    return `${h}:${m}`;
+      let minutos = Number(minutosStr);
+
+      if (isNaN(minutos)) return `${horas}:`;
+
+      if (minutos > 59) minutos = 59;
+
+      const horasFormatadas = `${horas}:${String(minutos).padStart(2, '0')}`;
+      this.horaTotalAlterada = horasFormatadas;
+      return horasFormatadas;
+    }
+
+    const numeros = horasTotais.replace(/\D/g, '');
+
+    if (!numeros) return '';
+
+    if (numeros.length <= 2) return numeros;
+
+    const horas = Number(numeros.slice(0, -2));
+    let minutos = Number(numeros.slice(-2));
+
+    if (minutos > 59) minutos = 59;
+
+    const horasFormatadas = `${horas}:${String(minutos).padStart(2, '0')}`;
+    this.horaTotalAlterada = horasFormatadas;
+    return horasFormatadas;
   }
 }
