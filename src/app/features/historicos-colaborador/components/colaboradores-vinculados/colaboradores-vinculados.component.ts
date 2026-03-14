@@ -96,7 +96,7 @@ export class ColaboradoresVinculadosComponent implements OnInit {
 
   adicionarColaborador(colaborador: Colaborador): void {
     const colaboradorNaoPlanejado = this.projetoSelecionado.colaboradores.find(
-      (f) => f.NMatricula == colaborador.NMatricula
+      (f) => f.NMatricula == colaborador.NMatricula,
     );
 
     if (colaboradorNaoPlanejado) {
@@ -110,19 +110,24 @@ export class ColaboradoresVinculadosComponent implements OnInit {
   }
 
   calculaDesvio(colaborador: Colaborador): string {
-    const horasTotais = colaborador?.NHorasTotais
+    let horasTotais = colaborador?.NHorasTotais
       ? this.converterParaMinutos(colaborador?.NHorasTotais)
       : 0;
+    const horasAdicionais = colaborador?.NHorasAdicionais
+      ? this.converterParaMinutos(colaborador?.NHorasAdicionais)
+      : 0;
     const horasApontadas = this.converterParaMinutos(
-      colaborador?.NHorasApontadas
+      colaborador?.NHorasApontadas,
     );
+
+    horasTotais = horasTotais + horasAdicionais;
 
     if (horasTotais < horasApontadas)
       colaborador.NDesvio =
         '- ' + this.converterParaHoraFormatada(horasApontadas - horasTotais);
     else
       colaborador.NDesvio = this.converterParaHoraFormatada(
-        horasTotais - horasApontadas
+        horasTotais - horasApontadas,
       );
     return colaborador.NDesvio;
   }
@@ -135,8 +140,8 @@ export class ColaboradoresVinculadosComponent implements OnInit {
               (f) =>
                 !this.colaboradoresAdicionados.some(
                   (colabAdicionado) =>
-                    colabAdicionado.NMatricula == f.NMatricula
-                )
+                    colabAdicionado.NMatricula == f.NMatricula,
+                ),
             )
             .concat(this.colaboradoresAdicionados)
         : this.colaboradoresAdicionados) || []
@@ -153,8 +158,8 @@ export class ColaboradoresVinculadosComponent implements OnInit {
                 (f.excluir &&
                   !this.colaboradoresAdicionados.some(
                     (colabAdicionado) =>
-                      colabAdicionado.NMatricula == f.NMatricula
-                  ))
+                      colabAdicionado.NMatricula == f.NMatricula,
+                  )),
             )
             .map((m) => {
               return {
@@ -173,10 +178,10 @@ export class ColaboradoresVinculadosComponent implements OnInit {
         this.colaboradoresAdicionados.find(
           (f) =>
             f?.NEmpresa == colaborador?.NEmpresa &&
-            f?.NMatricula == colaborador?.NMatricula
-        )
+            f?.NMatricula == colaborador?.NMatricula,
+        ),
       ),
-      1
+      1,
     );
   }
 
@@ -224,10 +229,10 @@ export class ColaboradoresVinculadosComponent implements OnInit {
           (Number(
             colaborador.NHorasTotais.indexOf(':') > 0
               ? this.converterParaMinutos(colaborador.NHorasTotais)
-              : Number(colaborador.NHorasTotais) * 60
+              : Number(colaborador.NHorasTotais) * 60,
           ) ?? 0),
-        0
-      ) || 0
+        0,
+      ) || 0,
     );
   }
 
@@ -236,8 +241,8 @@ export class ColaboradoresVinculadosComponent implements OnInit {
       this.retornaListaColaboradoresTabela().reduce(
         (sum, colaborador) =>
           sum + (this.converterParaMinutos(colaborador.NHorasApontadas) || 0),
-        0
-      ) || 0
+        0,
+      ) || 0,
     );
   }
 
@@ -246,15 +251,25 @@ export class ColaboradoresVinculadosComponent implements OnInit {
       this.retornaListaColaboradoresTabela().reduce(
         (sum, colaborador) =>
           sum + (this.converterParaMinutos(colaborador.NDesvio) || 0),
-        0
-      ) || 0
+        0,
+      ) || 0,
+    );
+  }
+
+  calculaAdicionaisTotais(): string {
+    return this.converterParaHoraFormatada(
+      this.retornaListaColaboradoresTabela().reduce(
+        (sum, colaborador) =>
+          sum + (this.converterParaMinutos(colaborador.NHorasAdicionais) || 0),
+        0,
+      ) || 0,
     );
   }
 
   verificaSeHorasTotaisMenorHorasApontadas(
     horasTotalNovas: string,
     horasTotalAntiga: string,
-    horasApontadas: string
+    horasApontadas: string,
   ): boolean {
     const minutosNovos = this.converterParaMinutos(horasTotalNovas);
     const minutosAntigos = this.converterParaMinutos(horasTotalAntiga);
@@ -267,7 +282,7 @@ export class ColaboradoresVinculadosComponent implements OnInit {
       this.verificaSeHorasTotaisMenorHorasApontadas(
         this.horaTotalAlterada,
         this.retornaListaColaboradoresTabela()[index].NHorasTotaisOriginal,
-        this.retornaListaColaboradoresTabela()[index].NHorasApontadas
+        this.retornaListaColaboradoresTabela()[index].NHorasApontadas,
       )
     ) {
       this.retornaListaColaboradoresTabela()[index].NHorasTotais =

@@ -51,7 +51,7 @@
           <td>{{ colaborador.NHorasApontadas }}</td>
           <td
             [ngClass]="{
-              'texto-vermelho': verificaDesvioNegativo(colaborador.NDesvio)
+              'texto-vermelho': verificaDesvioNegativo(colaborador.NDesvio),
             }"
           >
             {{ calculaDesvio(colaborador) }}
@@ -85,30 +85,44 @@
     </p-table>
 
     <p-card *ngIf="retornaListaColaboradoresTabela().length > 0">
-      <div class="grid gap-3">
-        <div class="col-12 md:col-3 flex align-items-center gap-2">
+      <div class="flex gap-6 align-items-center flex-wrap">
+        <div class="flex align-items-center gap-2">
           <span class="font-bold text-base text-nowrap">Horas Planejadas:</span>
           <span class="text-base">
             {{ calculaHorasPlanejadasTotais() || "00:00" }}
           </span>
         </div>
 
-        <div class="col-12 md:col-3 flex align-items-center gap-2">
+        <div class="flex align-items-center gap-2">
           <span class="font-bold text-base text-nowrap">Horas Apontadas:</span>
           <span class="text-base">
             {{ calculaHorasApontadasTotais() || "00:00" }}
           </span>
         </div>
 
-        <div class="col-12 md:col-3 flex align-items-center gap-2">
+        <div class="flex align-items-center gap-2">
           <span class="font-bold text-base text-nowrap">Desvio Total:</span>
           <span
             class="text-base"
             [ngClass]="{
-              'texto-vermelho': verificaDesvioNegativo(calculaDesvioTotal())
+              'texto-vermelho': verificaDesvioNegativo(calculaDesvioTotal()),
             }"
           >
             {{ calculaDesvioTotal() || "00:00" }}
+          </span>
+        </div>
+
+        <div class="flex align-items-center gap-2">
+          <span class="font-bold text-base text-nowrap">Horas Adicionais:</span>
+          <span
+            class="text-base"
+            [ngClass]="{
+              'texto-vermelho': verificaDesvioNegativo(
+                calculaAdicionaisTotais()
+              ),
+            }"
+          >
+            {{ calculaAdicionaisTotais() || "00:00" }}
           </span>
         </div>
       </div>
